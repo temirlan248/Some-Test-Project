@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Some Test Project</string>
+    <string name="add">Add</string>
+    <string name="x">X</string>
+    <string name="name">Name:</string>
+    <string name="description">Descr:</string>
+</resources>
