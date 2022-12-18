@@ -46,13 +46,24 @@ class HomeFragment : MvpAppCompatFragment(), HomeView {
         super.onViewCreated(view, savedInstanceState)
         setupRV()
         setupAddClickListener()
+        setupActionNextListener()
         setupActionDoneListener()
+    }
+
+    private fun setupActionNextListener() = with(viewBinding) {
+        nameEt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                descriptionEt.requestFocus()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
     }
 
     private fun setupActionDoneListener() = with(viewBinding) {
         descriptionEt.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                onAddClicked()
+                addBtn.performClick()
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
@@ -61,18 +72,14 @@ class HomeFragment : MvpAppCompatFragment(), HomeView {
 
     private fun setupAddClickListener() = with(viewBinding) {
         addBtn.setOnClickListener {
-            onAddClicked()
+            val name = nameEt.text.toString()
+            val description = descriptionEt.text.toString()
+
+            presenter.addTask(name, description)
+
+            nameEt.text.clear()
+            descriptionEt.text.clear()
         }
-    }
-
-    private fun onAddClicked() = with(viewBinding) {
-        val name = nameEt.text.toString()
-        val description = descriptionEt.text.toString()
-
-        presenter.addTask(name, description)
-
-        nameEt.text.clear()
-        descriptionEt.text.clear()
     }
 
     private fun setupRV() = with(viewBinding) {
